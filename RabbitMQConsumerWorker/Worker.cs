@@ -21,7 +21,7 @@ namespace RabbitMQConsumerWorker
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Redis ba�lant� hatas�!");
+                logger.LogError(ex, "Redis bağlantı hatası!");
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace RabbitMQConsumerWorker
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine($" [OK] Mesaj ba�ar�yla i�lendi ve onayland� (ACK).");
+                            Console.WriteLine($" [OK] Mesaj başarıyla işlendi ve onaylandı (ACK).");
 
                             var result = await _redisDb.HashSetAsync("messages:success", deliveryTagString, redisValue);
                             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -114,7 +114,7 @@ namespace RabbitMQConsumerWorker
                 };
 
                 await channel.BasicConsumeAsync(RabbitMqConfig.DL_QUEUE, autoAck: false, dlqConsumer);
-                Console.WriteLine($" [OK] Dead Letter Kuyru�u ({RabbitMqConfig.DL_QUEUE}) dinlenmeye başlandı.");
+                Console.WriteLine($" [OK] Dead Letter Kuyruğu ({RabbitMqConfig.DL_QUEUE}) dinlenmeye başlandı.");
 
 
                 Console.WriteLine("Consumer: Tüketici başltıldı.");
