@@ -50,7 +50,7 @@ namespace RabbitMQConsumerWorker
                 Console.WriteLine($" [OK] Ana Kuyruk ({RabbitMqConfig.MAIN_QUEUE}) DLX ile ASENKRON kuruldu.");
 
 
-                // --- 1. ANA KUYRUK T�KET�C�S� (HASH KULLANIMI) ---
+                // --- 1. ANA KUYRUK TÜKETİCİSİ (HASH KULLANIMI) ---
                 var consumer = new AsyncEventingBasicConsumer(channel);
                 consumer.ReceivedAsync += async (sender, eventArgs) =>
                 {
@@ -93,7 +93,7 @@ namespace RabbitMQConsumerWorker
                 await channel.BasicConsumeAsync(RabbitMqConfig.MAIN_QUEUE, autoAck: false, consumer);
 
 
-                // --- 2. DEAD LETTER KUYRUK (DLQ) T�KET�C�S� (HASH KULLANIMI) ---
+                // --- 2. DEAD LETTER KUYRUK (DLQ) TÜKETİCİSİ (HASH KULLANIMI) ---
                 var dlqConsumer = new AsyncEventingBasicConsumer(channel);
 
                 dlqConsumer.ReceivedAsync += async (sender, eventArgs) =>
@@ -119,7 +119,6 @@ namespace RabbitMQConsumerWorker
 
                 Console.WriteLine("Consumer: Tüketici başltıldı.");
 
-                // Worker'�n aktif kalmas�n� sa�layan d�ng�
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     await Task.Delay(1000, stoppingToken);
@@ -131,7 +130,6 @@ namespace RabbitMQConsumerWorker
             }
             finally
             {
-                // Temizlik i�lemleri (Kalan k�s�mlar ayn�)
                 if (channel is { IsOpen: true }) await channel.CloseAsync(200, "Worker stopped");
                 if (connection is { IsOpen: true }) await connection.CloseAsync(200, "Worker stopped");
                 if (_redisConnection is { IsConnected: true }) _redisConnection.Dispose();
